@@ -1,15 +1,17 @@
 package ru.yandex.practicum.filmorate.repository;
 
 import lombok.Getter;
+import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 @Getter
 public class FilmRepository {
-    private final Map<Long, Film> films = new HashMap<>();
+    final Map<Long, Film> films = new HashMap<>();
 
     public void saveFilm(Film film) {
         film.setId(getNextId());

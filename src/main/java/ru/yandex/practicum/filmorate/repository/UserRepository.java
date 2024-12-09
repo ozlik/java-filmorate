@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.repository;
 
 import lombok.Getter;
+import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.DuplicatedDataException;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
@@ -8,9 +9,10 @@ import ru.yandex.practicum.filmorate.model.User;
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 @Getter
 public class UserRepository {
-    private final Map<Long, User> users = new HashMap<>();
+   final Map<Long, User> users = new HashMap<>();
 
     public void saveUser(User user) {
         if (users.values().stream()

@@ -16,7 +16,6 @@ import java.util.Collection;
 @Slf4j
 public class FilmController {
 
-
     final FilmRepository repository;
     final ValidationServiceClass validation;
 
