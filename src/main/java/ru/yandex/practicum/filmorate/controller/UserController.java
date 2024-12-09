@@ -12,16 +12,17 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping("/users")
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class UserController {
-    final UserRepository repository;
+
+    final UserRepository userRepository;
     final ValidationServiceClass validation;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Collection<User> findAll() {
-        return repository.getUsers().values();
+        return userRepository.getUsers().values();
     }
 
     @PostMapping
@@ -31,7 +32,7 @@ public class UserController {
         // проверяем выполнение необходимых условий
         validation.userValidate(user);
         //сохраняем в репозитории
-        repository.saveUser(user);
+        userRepository.saveUser(user);
         log.info("Create User: {} - Finished", user);
         return user;
     }
@@ -43,7 +44,7 @@ public class UserController {
         // проверяем необходимые условия
         validation.userValidateUpdate(newUser);
         // если пользователь найден и все условия соблюдены, обновляем его
-        User oldUser = repository.updateUser(newUser);
+        User oldUser = userRepository.updateUser(newUser);
         log.info("Update User: {} - Finished", oldUser);
         return oldUser;
     }

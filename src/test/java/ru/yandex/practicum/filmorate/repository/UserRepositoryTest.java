@@ -27,4 +27,6 @@ class UserRepositoryTest {
 
         assertEquals(user.getName(), user.getLogin());
     }
+
+
 }

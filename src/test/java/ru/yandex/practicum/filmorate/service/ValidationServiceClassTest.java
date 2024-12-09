@@ -216,4 +216,27 @@ class ValidationServiceClassTest {
 
         assertEquals(1, film.getDuration());
     }
+
+    //обновление пользователя
+    @Test
+    @DisplayName("Выдавать ошибку при обновлении пользователя с некорректным id")
+    void shouldNotUpdateUserWithWrongId() {
+        user.setEmail("dfkgjg@fdgh.ru");
+        user.setBirthday(LocalDate.of(2024, 12, 6));
+        user.setLogin("login");
+
+        assertThrows(RuntimeException.class, () -> validation.userValidateUpdate(user));
+    }
+
+    @Test
+    @DisplayName("Выдавать ошибку при обновлении пользователя с датой рождения из будущего")
+    void shouldNotUpdateUserWithWrongBirthday() {
+        user.setEmail("dfkgjg@fdgh.ru");
+        user.setLogin("login");
+        user.setId(1L);
+
+        user.setBirthday(LocalDate.of(2025, 12, 8));
+
+        assertThrows(RuntimeException.class, () -> validation.userValidateUpdate(user));
+    }
 }
