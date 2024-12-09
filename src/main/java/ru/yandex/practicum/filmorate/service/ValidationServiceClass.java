@@ -22,8 +22,10 @@ public class ValidationServiceClass implements ValidationService {
         if (film.getReleaseDate().isBefore(LocalDate.of(1895, Month.DECEMBER, 28))) {
             throw new ConditionsNotMetException("Дата релиза должна быть не раньше 28 декабря 1895 года");
         }
-        if (film.getDescription().length() > 200) {
-            throw new ConditionsNotMetException("Максимальная длина описания — 200 символов");
+        if (film.getDescription() != null || !film.getDescription().trim().isEmpty()) {
+            if (film.getDescription().length() > 200) {
+                throw new ConditionsNotMetException("Максимальная длина описания — 200 символов");
+            }
         }
     }
 
@@ -32,11 +34,10 @@ public class ValidationServiceClass implements ValidationService {
         if (newFilm.getId() == null) {
             throw new ConditionsNotMetException("Id должен быть указан");
         }
-        if (newFilm.getDescription() == null || newFilm.getDescription().trim().isEmpty()) {
-            throw new ConditionsNotMetException("Описание не может быть пустым");
-        }
-        if (newFilm.getDescription().length() <= 200) {
-            throw new ConditionsNotMetException("Максимальная длина описания — 200 символов");
+        if (newFilm.getDescription() != null || !newFilm.getDescription().trim().isEmpty()) {
+            if (newFilm.getDescription().length() <= 200) {
+                throw new ConditionsNotMetException("Максимальная длина описания — 200 символов");
+            }
         }
         if (newFilm.getDuration() <= 0) {
             throw new ConditionsNotMetException("Продолжительность фильма должна быть положительным числом");
@@ -81,11 +82,15 @@ public class ValidationServiceClass implements ValidationService {
                 throw new ConditionsNotMetException("Имейл должен содержать символ @");
             }
         }
-        if (newUser.getBirthday().isAfter(LocalDate.now())) {
-            throw new ConditionsNotMetException("Дата рождения не может быть в будущем");
+        if ((newUser.getBirthday() != null)) {
+            if (newUser.getBirthday().isAfter(LocalDate.now())) {
+                throw new ConditionsNotMetException("Дата рождения не может быть в будущем");
+            }
         }
-        if (newUser.getLogin().contains(" ")) {
-            throw new ConditionsNotMetException("В логине не должно быть пробелов");
+        if (newUser.getLogin() != null || newUser.getLogin().trim().isEmpty()) {
+            if (newUser.getLogin().contains(" ")) {
+                throw new ConditionsNotMetException("В логине не должно быть пробелов");
+            }
         }
     }
 }

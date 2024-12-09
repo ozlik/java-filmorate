@@ -239,4 +239,75 @@ class ValidationServiceClassTest {
 
         assertThrows(RuntimeException.class, () -> validation.userValidateUpdate(user));
     }
+
+    @Test
+    @DisplayName("Выдавать ошибку при обновлении пользователя с пробелом в логине")
+    void shouldNotUpdateUserWithEmptySpaceBetweenLogin() {
+        user.setEmail("dfkgjg@fdgh.ru");
+        user.setBirthday(LocalDate.of(2024, 12, 6));
+        user.setId(1L);
+
+        user.setLogin("orr rss");
+
+        assertThrows(RuntimeException.class, () -> validation.userValidateUpdate(user));
+    }
+
+    @Test
+    @DisplayName("Выдавать ошибку при обновлении пользователя с имейлом без @")
+    void shouldNotUpdateUserWithOutSymbolEmail() {
+        user.setLogin("login");
+        user.setBirthday(LocalDate.of(2024, 12, 6));
+        user.setId(1L);
+
+        user.setEmail("dfkgjg");
+
+        assertThrows(RuntimeException.class, () -> validation.userValidateUpdate(user));
+    }
+
+    @Test
+    @DisplayName("Выдавать ошибку при обновлении пользователя")
+    void shouldNotUpdateEmptyUser() {
+        user.setLogin("");
+        user.setId(1L);
+
+        assertThrows(RuntimeException.class, () -> validation.userValidateUpdate(user));
+    }
+
+    //обновление фильма
+    @Test
+    @DisplayName("Выдавать ошибку при обновлении фильма с некорректным id")
+    void shouldNotUpdateFilmWithWrongId() {
+        film.setName("name");
+        film.setDuration(50);
+        film.setReleaseDate(LocalDate.of(1895, 12, 29));
+
+        assertThrows(RuntimeException.class, () -> validation.userValidateUpdate(user));
+    }
+
+    @Test
+    @DisplayName("Выдавать ошибку при обновлении фильма с описание больше 200 символов")
+    void shouldNotUpdateFilmWithMore200DescriptionLength() {
+        film.setName("name");
+        film.setDuration(50);
+        film.setReleaseDate(LocalDate.of(1895, 12, 29));
+
+        //201
+        film.setDescription("Душа моя озарена неземной радостью, как эти чудесные весенние утра, " +
+                "которыми я наслаждаюсь от всего сердца. Я совсем один и блаженствую в здешнем краю, " +
+                "словно созданном для таких, как я. Я так счастлив");
+
+        assertThrows(RuntimeException.class, () -> validation.filmValidateUpdate(film));
+    }
+
+    @Test
+    @DisplayName("Не обновлять фильм с отрицательной длительностью")
+    void shouldUpdateFilmWithDuration() {
+        film.setName("name");
+        film.setDescription("description");
+        film.setReleaseDate(LocalDate.of(1895, 12, 29));
+
+        film.setDuration(-50);
+
+        assertThrows(RuntimeException.class, () -> validation.filmValidateUpdate(film));
+    }
 }
